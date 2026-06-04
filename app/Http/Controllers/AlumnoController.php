@@ -20,9 +20,13 @@ class AlumnoController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request->has('estado') && ! $request->has('estado_matricula')) {
+            $request->merge(['estado_matricula' => $request->estado]);
+        }
+
         if ($request->has('estado_matricula')) {
             $request->merge([
-                'estado_matricula' => ucfirst(strtolower($request->estado_matricula))
+                'estado_matricula' => ucfirst(strtolower(trim($request->estado_matricula)))
             ]);
         }
 
@@ -48,7 +52,7 @@ class AlumnoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(int $id)
     {
         $alumno = Alumno::findOrFail($id);
         return response()->json($alumno);
@@ -57,13 +61,17 @@ class AlumnoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         $alumno = Alumno::findOrFail($id);
 
+        if ($request->has('estado') && ! $request->has('estado_matricula')) {
+            $request->merge(['estado_matricula' => $request->estado]);
+        }
+
         if ($request->has('estado_matricula')) {
             $request->merge([
-                'estado_matricula' => ucfirst(strtolower($request->estado_matricula))
+                'estado_matricula' => ucfirst(strtolower(trim($request->estado_matricula)))
             ]);
         }
 
@@ -89,7 +97,7 @@ class AlumnoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         $alumno = Alumno::findOrFail($id);
         $alumno->delete();

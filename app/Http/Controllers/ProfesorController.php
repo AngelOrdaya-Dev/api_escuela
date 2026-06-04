@@ -20,6 +20,16 @@ class ProfesorController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request->has('estado') && ! $request->has('estado_matricula')) {
+            $request->merge(['estado_matricula' => $request->estado]);
+        }
+
+        if ($request->has('estado_matricula')) {
+            $request->merge([
+                'estado_matricula' => ucfirst(strtolower(trim($request->estado_matricula)))
+            ]);
+        }
+
         $validated = $request->validate([
             'nombre' => 'required|string|max:255',
             'apellidos' => 'required|string|max:255',
@@ -28,7 +38,7 @@ class ProfesorController extends Controller
             'direccion' => 'nullable|string|max:255',
             'telefono' => 'nullable|string|max:9',
             'email' => 'required|string|max:255|unique:profesores,email',
-            'estado_matricula' => 'required|in:Matriculado,Inactivo',
+            'estado_matricula' => 'required|in:Activo,Inactivo',
             'especialidad' => 'required|string|max:255',
         ]);
 
@@ -43,7 +53,7 @@ class ProfesorController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(int $id)
     {
         $profesor = Profesor::findOrFail($id);
         return response()->json($profesor);
@@ -52,9 +62,19 @@ class ProfesorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         $profesor = Profesor::findOrFail($id);
+
+        if ($request->has('estado') && ! $request->has('estado_matricula')) {
+            $request->merge(['estado_matricula' => $request->estado]);
+        }
+
+        if ($request->has('estado_matricula')) {
+            $request->merge([
+                'estado_matricula' => ucfirst(strtolower(trim($request->estado_matricula)))
+            ]);
+        }
 
         $validated = $request->validate([
             'nombre' => 'required|string|max:255',
@@ -64,7 +84,7 @@ class ProfesorController extends Controller
             'direccion' => 'nullable|string|max:255',
             'telefono' => 'nullable|string|max:9',
             'email' => 'required|string|max:255|unique:profesores,email,' . $id . ',id_profesor',
-            'estado_matricula' => 'required|in:Matriculado,Inactivo',
+            'estado_matricula' => 'required|in:Activo,Inactivo',
             'especialidad' => 'required|string|max:255',
         ]);
 
@@ -79,7 +99,7 @@ class ProfesorController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         $profesor = Profesor::findOrFail($id);
         $profesor->delete();

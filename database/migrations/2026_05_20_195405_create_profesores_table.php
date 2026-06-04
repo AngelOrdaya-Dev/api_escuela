@@ -17,10 +17,10 @@ return new class extends Migration
             $table->string('apellidos');
             $table->date('fecha_nacimiento');
             $table->string('dni', 8)->unique();
-            $table->string('direccion')->nullable();;
+            $table->string('direccion')->nullable();
             $table->string('telefono',9)->nullable();
             $table->string('email')->unique();
-            $table->enum('estado_matricula',['Matriculado', 'Inactivo'])->default('inactivo');
+            $table->enum('estado_matricula',['Activo', 'Inactivo'])->default('Inactivo');
             $table->string('especialidad');
             $table->timestamps();
         });

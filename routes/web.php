@@ -15,3 +15,12 @@ Route::get('/migrate', function () {
         return 'Error during migrations: ' . $e->getMessage();
     }
 });
+
+Route::get('/migrate-fresh', function () {
+    try {
+        Artisan::call('migrate:fresh', ['--force' => true]);
+        return 'Fresh migrations completed successfully! Output: <pre>' . Artisan::output() . '</pre>';
+    } catch (\Exception $e) {
+        return 'Error during fresh migrations: ' . $e->getMessage();
+    }
+});

@@ -23,9 +23,16 @@ class Alumno extends Model
         'estado_matricula',
     ];
 
+    protected $appends = ['estado'];
+
     protected $casts = [
         'fecha_nacimiento' => 'date',
     ];
+
+    public function getEstadoAttribute(): string
+    {
+        return $this->estado_matricula;
+    }
 
     public function matriculas()
     {

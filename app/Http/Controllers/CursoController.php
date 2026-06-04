@@ -23,6 +23,8 @@ class CursoController extends Controller
         $validated = $request->validate([
             'nombre_curso' => 'required|string|max:255',
             'creditos' => 'required|integer|min:1',
+            'horas' => 'required|integer|min:1',
+            'estado' => 'nullable|string|in:activo,inactivo',
             'descripcion' => 'nullable|string',
         ]);
 
@@ -53,6 +55,8 @@ class CursoController extends Controller
         $validated = $request->validate([
             'nombre_curso' => 'required|string|max:255',
             'creditos' => 'required|integer|min:1',
+            'horas' => 'required|integer|min:1',
+            'estado' => 'nullable|string|in:activo,inactivo',
             'descripcion' => 'nullable|string',
         ]);
 

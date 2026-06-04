@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id('id_curso');
             $table->string('nombre_curso');
             $table->integer('creditos');
+            $table->integer('horas')->default(0);
+            $table->string('estado')->default('activo');
             $table->text('descripcion')->nullable();
             $table->timestamps();
         });

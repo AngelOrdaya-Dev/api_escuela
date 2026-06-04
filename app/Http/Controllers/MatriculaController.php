@@ -20,6 +20,16 @@ class MatriculaController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request->has('estado_matricula') && ! $request->has('estado')) {
+            $request->merge(['estado' => $request->estado_matricula]);
+        }
+
+        if ($request->has('estado')) {
+            $request->merge([
+                'estado' => strtolower(trim($request->estado))
+            ]);
+        }
+
         $validated = $request->validate([
             'id_alumno' => 'required|exists:alumno,id_alumno',
             'id_curso' => 'required|exists:cursos,id_curso',
@@ -43,7 +53,7 @@ class MatriculaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(int $id)
     {
         $matricula = Matricula::with(['alumno', 'curso', 'horario', 'profesor'])->findOrFail($id);
         return response()->json($matricula);
@@ -52,9 +62,19 @@ class MatriculaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         $matricula = Matricula::findOrFail($id);
+
+        if ($request->has('estado_matricula') && ! $request->has('estado')) {
+            $request->merge(['estado' => $request->estado_matricula]);
+        }
+
+        if ($request->has('estado')) {
+            $request->merge([
+                'estado' => strtolower(trim($request->estado))
+            ]);
+        }
 
         $validated = $request->validate([
             'id_alumno' => 'required|exists:alumno,id_alumno',
@@ -79,7 +99,7 @@ class MatriculaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         $matricula = Matricula::findOrFail($id);
         $matricula->delete();
